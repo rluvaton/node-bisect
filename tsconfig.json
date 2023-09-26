@@ -1,14 +1,15 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "compilerOptions": {
-    "lib": ["es2022"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "es2022",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "outDir": "dist"
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
   },
-  "include": ["src"]
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "esnext",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "strict": true,
+    "strictNullChecks": true
+  }
 }
