@@ -22,13 +22,24 @@ const {values} = parseArgs({
         to: {
             type: "string",
         },
+
+        // from where to run the tests, either 'dist' or 'docker'
+        source: {
+            type: "string",
+
+            // For macOS, default to 'dist' as we currently only support dist in docker
+            default: process.platform === 'darwin' ? 'dist' : 'docker'
+        }
     },
 });
 
 interface UserOptions {
     test: string,
+
     from: string,
-    to: string
+    to: string,
+
+    source: 'docker' | 'dist'
 }
 
 function validateAndParseOptions(args: UserOptions) {
@@ -37,6 +48,15 @@ function validateAndParseOptions(args: UserOptions) {
     assert.ok(args.to, "Missing required argument: --to");
     assert.ok(semver.valid(args.from), `Invalid version: --from ${args.from}`);
     assert.ok(semver.valid(args.to), `Invalid version: --to ${args.to}`);
+
+    const availableSources = ['docker'];
+
+    // Currently only supporting dist in macOS
+    if(process.platform === 'darwin') {
+        availableSources.push('dist');
+    }
+
+    assert.ok(availableSources.includes(args.source), `Invalid value for --source: ${args.source}, must be one of ${availableSources.join(', ')}`);
 
     assert.ok(
         semver.lt(args.from, args.to),
@@ -57,6 +77,7 @@ function validateAndParseOptions(args: UserOptions) {
         testFile: testFilePath,
         from: args.from,
         to: args.to,
+        source: args.source
     };
 }
 

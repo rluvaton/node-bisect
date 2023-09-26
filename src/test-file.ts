@@ -1,14 +1,13 @@
-import {execFile} from "node:child_process";
+import {execFile, ExecFileException} from "node:child_process";
 
 import {downloadNodeImage, downloadNodeVersion} from "./download-node.js";
 import {InvalidVersionError} from "./errors/invalid-version";
-import {ExecFileException} from "child_process";
 import {NodeVersion} from "./node-versions";
 import {Ora} from "ora";
 import chalk from "chalk";
 import path from "node:path";
 
-export async function testVersion({version, testFile, spinner}: {
+export async function testVersionDist({version, testFile, spinner}: {
     version: NodeVersion;
     testFile: string;
     spinner: Ora
@@ -51,7 +50,6 @@ export function runTest({version, nodePath, testFile, spinner}: {
     });
 }
 
-
 export async function testVersionDocker({version, testFile, spinner}: {
     version: NodeVersion;
     testFile: string;
@@ -68,7 +66,6 @@ export async function testVersionDocker({version, testFile, spinner}: {
 
     return await runTestDocker({version, image, testFile, spinner});
 }
-
 
 export function runTestDocker({version, image, testFile, spinner}: {
     version: NodeVersion;

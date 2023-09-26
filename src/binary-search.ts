@@ -5,13 +5,8 @@
  * the last item in the array is assumed to be bad
  *
  * when the array is all good/bad, it returns null
- *
- *
- * @param arr
- * @param isSuccess
- * @param debug
  */
-export async function bisect<T>(arr: T[], isSuccess: (val: T) => Promise<boolean>, debug: (v: T) => string | number = (v) => JSON.stringify(v)): Promise<T | null> {
+export async function bisect<T>(arr: T[], isSuccess: (val: T) => Promise<boolean>): Promise<T | null> {
     let start = 0;
     let end = arr.length - 1;
     let mid = Math.floor((start + end) / 2);
@@ -20,8 +15,6 @@ export async function bisect<T>(arr: T[], isSuccess: (val: T) => Promise<boolean
     let atLeastOneSuccess = false;
 
     while (start <= end) {
-        // console.log(`testing subset ${arr.slice(start, end + 1).map(v => debug(v)).join(', ')}`)
-
         const item = arr[mid];
         const success = await isSuccess(item);
 

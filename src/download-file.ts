@@ -1,14 +1,13 @@
 import os from 'node:os';
-import fs from 'node:fs/promises';
+import fs, {readdir} from 'node:fs/promises';
 import {Readable} from 'node:stream';
 import {pipeline} from 'node:stream/promises';
 import path from 'node:path';
 import {extract} from 'tar-fs';
 import gunzip from 'gunzip-maybe';
-import fetchProgress from "fetch-progress";
-import ora, {Ora} from 'ora';
+import {Ora} from 'ora';
 import chalk from 'chalk';
-import {readdir} from "fs/promises";
+import {fetchProgress} from "./fetch-progress";
 
 let tmpFolder: string;
 
@@ -36,29 +35,23 @@ export async function downloadFile({version, url, spinner}: { version: string, u
 
         spinner.text = `${prefixText} ${chalk.gray(`${url} to ${outputFolder})`)}`;
 
-        const downloadFileRes = await fetchProgress({
-            // implement onProgress method
+        const downloadFileResWithoutProgress = await fetch(url);
+        const downloadFileRes = fetchProgress({
+            response: downloadFileResWithoutProgress,
+
             onProgress(progress) {
                 spinner.text = `${prefixText} ${chalk.green(`${(progress as any).percentage.toFixed(2)}%`)}`;
-
-                // A possible progress report you will get
-                // {
-                //    total: 3333,
-                //    transferred: 3333,
-                //    speed: 3333,
-                //    eta: 33,
-                //    percentage: 33
-                //    remaining: 3333,
-                // }
             },
-        })(await fetch(url));
+        });
 
+
+        // TODO - filter files to only include the ones we need (bin/node)
         await pipeline(Readable.fromWeb(downloadFileRes.body as any), gunzip(), extract(outputFolder));
 
-        const foldersInOutput = (await readdir(outputFolder, { withFileTypes: true }))
+        const foldersInOutput = (await readdir(outputFolder, {withFileTypes: true}))
             .filter(dirent => dirent.isDirectory());
 
-        if(foldersInOutput.length === 1) {
+        if (foldersInOutput.length === 1) {
             outputFolder = path.join(outputFolder, foldersInOutput[0].name);
         }
 
