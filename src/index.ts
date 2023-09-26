@@ -2,9 +2,14 @@ import {findFirstFailingVersion} from "./find-first-failing-version";
 import {options} from "./cli";
 import {getNodeVersionsInRange} from "./node-versions";
 import {cleanupTmpFolder} from "./download-file";
+import ora from "ora";
 
 async function run() {
-    const versions = await getNodeVersionsInRange(options.from, options.to)
+
+    const spinner = ora(`Downloading versions between ${options.from} to ${options.to}`).start();
+    const versions = await getNodeVersionsInRange(options.from, options.to);
+    spinner.succeed(`Downloaded ${versions.length} versions (${versions.map(v => v.version).join(', ')})`);
+
     const failedRelease = await findFirstFailingVersion(versions, options.testFile);
 
     if (!failedRelease) {

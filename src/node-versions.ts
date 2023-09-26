@@ -37,6 +37,6 @@ export async function getNodeVersionsInRange(from: string, to: string): Promise<
     const body: NodeVersion[] = await response.json();
 
     return body
-        .filter(({version}) => semver.satisfies(version, `>= ${from} <= ${to}`))
-        .sort((a, b) => semver.compare(a.version, b.version));
+        .filter(({version}) => semver.satisfies(version.replace('v', ''), `>= ${from} <= ${to}`))
+        .sort((a, b) => semver.compare(a.version.replace('v', ''), b.version.replace('v', '')));
 }

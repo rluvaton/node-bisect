@@ -37,8 +37,9 @@ function validateAndParseOptions(args: UserOptions) {
     assert.ok(args.to, "Missing required argument: --to");
     assert.ok(semver.valid(args.from), `Invalid version: --from ${args.from}`);
     assert.ok(semver.valid(args.to), `Invalid version: --to ${args.to}`);
+
     assert.ok(
-        semver.gt(args.from, args.to),
+        semver.lt(args.from, args.to),
         "--from cannot be greater than --to"
     );
 
