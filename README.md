@@ -1,10 +1,11 @@
-# `node-bisect`
+# `node-bisect` - Find node release that introduced a regression 
 
-Find node release that introduced a regression
+[![npm](https://img.shields.io/npm/v/node-bisect)](https://www.npmjs.com/package/node-bisect)
 
 > Note: if you are on mac you can provide `--source docker` to run the tests in docker container (on other platforms docker is used by default)
 
-Run `npm start -- --help` to see all available options
+
+Run `npx node-bisect --help` to see all available options
 
 ### Example
 
@@ -26,5 +27,5 @@ source.text().finally(() => {
 
 Run this command to find the release that introduced the regression
 ```bash
-npm start -- --from 18.17.0 --to 20.5.0 --test ./test.cjs
+npx node-bisect --from 18.17.0 --to 20.5.0 --test ./test.cjs
 ```
