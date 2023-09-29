@@ -116,4 +116,10 @@ if (values.help) {
   process.exit(0);
 }
 
+if(Object.keys(values).length === 0) {
+  console.log('No arguments provided\n');
+  console.log(helpText);
+  process.exit(1);
+}
+
 export const options = validateAndParseOptions(values as UserOptions);
