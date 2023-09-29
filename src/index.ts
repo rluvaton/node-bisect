@@ -36,6 +36,8 @@ async function run() {
   }
 
   console.log(`The first release that failed was ${failedRelease.version}`);
+  console.log(`Go to the following link to see the changes in this release:`);
+  console.log(`\thttps://github.com/nodejs/node/releases/tag/${failedRelease.version}`);
 }
 
 let exitCode = 0;
