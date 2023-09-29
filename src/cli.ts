@@ -116,7 +116,8 @@ if (values.help) {
   process.exit(0);
 }
 
-if(Object.keys(values).length === 0) {
+// the first argument is the node binary and the second is the script
+if(process.argv.length === 2) {
   console.log('No arguments provided\n');
   console.log(helpText);
   process.exit(1);
