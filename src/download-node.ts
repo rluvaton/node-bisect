@@ -39,20 +39,19 @@ function getFolderForMac(version: NodeVersion) {
 
   const { files } = version;
 
-  switch (arch) {
-    case 'x64':
-      assert.ok(files.includes('osx-x64-tar'), 'No executable found!');
-
-      return `node-${version.version}-darwin-x64.tar.gz`;
-
-    case 'arm64':
-      assert.ok(files.includes('osx-arm64-tar'), 'No executable found!');
-
-      return `node-${version.version}-darwin-arm64.tar.gz`;
-
-    default:
-      throw new Error(`Unsupported architecture: ${arch}`);
+  if (arch !== 'x64' && arch !== 'arm64') {
+    throw new Error(`Unsupported architecture: ${arch}`);
   }
+
+  // means that the version is not available for arm64, but because we are running in mac,
+  // we can use the x64 version instead (it will run in rosetta)
+  if (arch === 'arm64' && files.includes('osx-arm64-tar')) {
+    return `node-${version.version}-darwin-arm64.tar.gz`;
+  }
+
+  assert.ok(files.includes('osx-x64-tar'), arch === 'arm64' ? 'No arm/x64 executable found!' : 'No executable found!');
+
+  return `node-${version.version}-darwin-x64.tar.gz`;
 }
 
 export async function downloadNodeImage(version: NodeVersion, spinner: Ora) {
