@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { bisect } from './binary-search';
+import { bisect } from './binary-search.js';
 
 describe('test binary algo', () => {
   it('all good should return null', async () => {

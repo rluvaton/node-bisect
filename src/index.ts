@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-import { options } from './cli';
-import { getNodeVersionsInRange } from './node-versions';
-import { cleanupTmpFolder } from './download-file';
+import { options } from './cli.js';
+import { getNodeVersionsInRange } from './node-versions.js';
+import { cleanupTmpFolder } from './download-file.js';
 import ora from 'ora';
-import { bisect } from './binary-search';
+import { bisect } from './binary-search.js';
 import chalk from 'chalk';
-import { testVersionDist, testVersionDocker } from './test-file';
+import { testVersionDist, testVersionDocker } from './test-file.js';
 
 async function run() {
   const spinner = ora(`Downloading versions between ${options.from} to ${options.to}`).start();

@@ -1,5 +1,5 @@
 import speedometer, { Speedometer } from 'speedometer';
-import type { onProgressFn } from './types';
+import type { onProgressFn } from './types.js';
 
 export class Progress {
   length: number;

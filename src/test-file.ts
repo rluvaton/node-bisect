@@ -1,8 +1,8 @@
 import { execFile, ExecFileException } from 'node:child_process';
 
 import { downloadNodeImage, downloadNodeVersion } from './download-node.js';
-import { InvalidVersionError } from './errors/invalid-version';
-import { NodeVersion } from './node-versions';
+import { InvalidVersionError } from './errors/invalid-version.js';
+import { NodeVersion } from './node-versions.js';
 import { Ora } from 'ora';
 import chalk from 'chalk';
 import path from 'node:path';

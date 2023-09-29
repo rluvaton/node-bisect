@@ -7,7 +7,7 @@ import { extract } from 'tar-fs';
 import gunzip from 'gunzip-maybe';
 import { Ora } from 'ora';
 import chalk from 'chalk';
-import { fetchProgress } from './fetch-progress';
+import { fetchProgress } from './fetch-progress/index.js';
 
 let tmpFolder: string;
 

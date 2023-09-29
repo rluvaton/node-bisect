@@ -1,5 +1,5 @@
 import { Progress } from './progress.js';
-import { FetchProgressInitOptions } from './types';
+import type { FetchProgressInitOptions } from './types.js';
 
 export function fetchProgress({
   defaultSize = 0,
