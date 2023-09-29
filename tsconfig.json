@@ -8,6 +8,7 @@
     "module": "esnext",
     "target": "esnext",
     "types": ["node"],
+    "outDir": "dist",
     "esModuleInterop": true,
     "strict": true,
     "strictNullChecks": true
