@@ -4,6 +4,8 @@ Find node release that introduced a regression
 
 > Note: if you are on mac you can provide `--source docker` to run the tests in docker container (on other platforms docker is used by default)
 
+Run `npm start -- --help` to see all available options
+
 ### Example
 
 `test.cjs`:

@@ -4,6 +4,9 @@ import semver from "semver";
 import path from "node:path";
 import fs from "node:fs";
 
+// For macOS, default to 'dist' as we currently only support dist in docker
+const isDistSupported = process.platform === 'darwin';
+
 const {values} = parseArgs({
     options: {
         // Define the test file and its command to run
@@ -27,8 +30,14 @@ const {values} = parseArgs({
         source: {
             type: "string",
 
-            // For macOS, default to 'dist' as we currently only support dist in docker
-            default: process.platform === 'darwin' ? 'dist' : 'docker'
+            default: isDistSupported ? 'dist' : 'docker'
+        },
+
+        help: {
+            type: "boolean",
+
+            short: "h",
+            default: false,
         }
     },
 });
@@ -51,8 +60,7 @@ function validateAndParseOptions(args: UserOptions) {
 
     const availableSources = ['docker'];
 
-    // Currently only supporting dist in macOS
-    if(process.platform === 'darwin') {
+    if(isDistSupported) {
         availableSources.push('dist');
     }
 
@@ -79,6 +87,35 @@ function validateAndParseOptions(args: UserOptions) {
         to: args.to,
         source: args.source
     };
+}
+
+const helpText = `
+node-bisect - A CLI tool to run tests on different Node.js versions within a specified version range to
+find the version that introduced a bug. 
+
+Usage:
+  node-bisect [options]
+
+Options:
+  --test <path>          Specify the path to the test file (should exit with 0 for success or other for failure).
+  --from <version>       Define the lower bound of the Node.js version range.
+  --to <version>         Define the upper bound of the Node.js version range.
+${isDistSupported ? `
+  --source <source>      Specify where to download the node version in 'docker' or 'dist'. (default: 'dist') [optional]
+`.substring(1) /*remove first extra line */: `
+  --source <source>      Specify where to download the node version currently only docker is supported in your system [optional]
+`.substring(1) /*remove first extra line */
+}
+  -h, --help             Display this help message.
+
+Examples:
+  - Run tests on Node.js versions from 18.0.0 to 20.0.0:
+    $ node-bisect --test my-test.js --from 18.0.0 --to 20.0.0
+`
+
+if(values.help) {
+    console.log(helpText);
+    process.exit(0);
 }
 
 export const options = validateAndParseOptions(values as UserOptions);
